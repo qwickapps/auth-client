@@ -1,0 +1,74 @@
+name: QwickApps Auth Client
+description: >
+  Complete React authentication solution for QwickApps applications. Provides
+  authentication components, context providers, hooks, and UI elements with
+  Material-UI integration and comprehensive frontend auth capabilities.
+
+type: react-library
+category: authentication
+framework: react
+language: typescript
+
+architecture:
+  type: auth-client
+  components:
+    - auth-provider
+    - auth-components
+    - auth-hooks
+    - route-guards
+    - storybook-docs
+  patterns:
+    - context-provider
+    - hooks-pattern
+    - component-composition
+
+dependencies:
+  runtime:
+    - react
+    - react-dom
+    - react-router-dom
+    - "@mui/material"
+    - "@supabase/supabase-js"
+  internal:
+    - "@qwickapps/auth"
+    - "@qwickapps/logging"
+    - "@qwickapps/react-framework"
+  development:
+    - storybook
+    - jest
+    - testing-library
+
+integrations:
+  - mui-components
+  - react-router
+  - supabase-client
+  - storybook-docs
+
+capabilities:
+  - auth-provider
+  - login-components
+  - registration-forms
+  - route-protection
+  - session-management
+  - social-login-ui
+  - password-reset-ui
+
+outputs:
+  - dist/
+  - storybook-static/
+
+quality:
+  linting: eslint
+  formatting: prettier
+  testing: jest
+  coverage_threshold: 80
+  accessibility: wcag-2.1-aa
+  storybook: enabled
+
+deployment:
+  type: npm-package
+  registry: private
+  storybook: enabled
+
+status: wip
+priority: critical
