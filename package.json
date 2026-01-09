@@ -46,6 +46,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "@qwickapps/logging": "^1.0.2",
+    "@qwickapps/auth": "^1.0.0",
     "@qwickapps/react-framework": "^1.5.9",
     "@supabase/supabase-js": "^2.54.0",
     "supertokens-web-js": "^0.15.0"
