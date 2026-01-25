@@ -1,95 +1,104 @@
 /**
- * RegisterPage - Complete registration page with modern layout
- * 
+ * RegisterPage - Complete registration page with built-in authentication
+ *
  * Provides a full-page registration experience with:
+ * - Automatic authentication integration
  * - Centered, card-based layout using FormPage
- * - CoverImageHeader with smart branding defaults
  * - Status message handling
  * - Consistent footer with sign-in link
  * - Responsive design for all screen sizes
- * 
+ *
  * Suggested route: /auth/register
- * 
+ *
  * Copyright (c) 2025 QwickApps.com. All rights reserved.
  */
 
-import React from 'react';
-import { RegisterForm, RegisterFormProps } from './RegisterForm';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RegisterForm } from './RegisterForm';
 import { FormPage } from '@qwickapps/react-framework';
 import { SignInFooterLink } from './AuthFooterLinks';
-
-export interface RegisterPageProps extends RegisterFormProps {
-  /** Page title (defaults to "Create Account") */
-  title?: string;
-  /** Page subtitle */
-  subtitle?: string;
-  /** Logo element (overrides default app logo) */
-  logo?: React.ReactNode;
-  /** Custom header content (overrides CoverImageHeader) */
-  header?: React.ReactNode;
-  /** Background variant */
-  background?: 'default' | 'gradient' | 'image';
-  /** Background image URL (when background='image') */
-  backgroundImage?: string;
-  /** Form container max width */
-  maxWidth?: 'xs' | 'sm' | 'md';
-  /** Status message type */
-  status?: 'info' | 'success' | 'warning' | 'error';
-  /** Status message content */
-  message?: string;
-  /** Link to login page */
-  signInUrl?: string;
-  /** Link to login page (alias for signInUrl) */
-  signInLink?: string;
-  /** Footer content */
-  footer?: React.ReactNode;
-  /** Sign in text for the footer link */
-  signInText?: string;
-  /** Terms and conditions link */
-  termsLink?: string;
-  /** Privacy policy link */
-  privacyLink?: string;
-}
+import { useAuth } from '../../hooks/useAuth';
+import { RegisterPageProps } from '../../types/auth-client';
 
 export const RegisterPage: React.FC<RegisterPageProps> = ({
   title = "Create Account",
   subtitle = "Join us and start your journey today",
   logo,
-  header,
-  background = 'default', 
-  backgroundImage,
-  maxWidth = 'sm',
-  status,
-  message,
-  signInUrl,
-  signInLink,
-  footer,
-  signInText,
-  termsLink,
-  privacyLink,
-  ...registerFormProps
+  onSuccess,
+  onError,
+  showSocialLogin = false,
+  requireName = false,
+  requireTerms = false,
+  termsUrl,
+  signInUrl = "/auth/login",
+  className,
 }) => {
-  // Use signInLink if provided, otherwise fallback to signInUrl
-  const loginUrl = signInLink ?? signInUrl;
-  
+  const navigate = useNavigate();
+  const { signUp, loading, error, clearError } = useAuth();
+  const [localError, setLocalError] = useState<string | undefined>();
+
+  const handleRegister = async (credentials: {
+    email: string;
+    password: string;
+    name?: string;
+    acceptTerms: boolean;
+  }) => {
+    try {
+      clearError();
+      setLocalError(undefined);
+
+      const result = await signUp({
+        email: credentials.email,
+        password: credentials.password,
+        name: credentials.name,
+      });
+
+      if (result.error) {
+        const errorMessage = result.error.message;
+        setLocalError(errorMessage);
+        if (onError) {
+          onError(result.error);
+        }
+      } else if (result.data) {
+        // Success - handle redirect
+        if (onSuccess) {
+          onSuccess(result.data);
+        } else {
+          // Default redirect to dashboard
+          navigate('/dashboard');
+        }
+      }
+    } catch (err) {
+      const errorMessage = 'An unexpected error occurred. Please try again.';
+      setLocalError(errorMessage);
+      console.error('Registration error:', err);
+    }
+  };
+
   // Create default footer with sign-in link
-  const footerContent = footer || (loginUrl ? (
-    <SignInFooterLink href={loginUrl} />
-  ) : undefined);
+  const footerContent = signInUrl ? (
+    <SignInFooterLink href={signInUrl} />
+  ) : undefined;
 
   return (
     <FormPage
       title={title}
       description={subtitle}
-      form={<RegisterForm {...registerFormProps} />}
+      form={
+        <RegisterForm
+          loading={loading}
+          error={localError || error?.message}
+          onRegister={handleRegister}
+          showSocialRegister={showSocialLogin}
+          requireName={requireName}
+          termsUrl={termsUrl}
+        />
+      }
       footer={footerContent}
-      status={status}
-      message={message}
       coverImage={logo}
-      // header={header}
-      maxWidth={maxWidth}
-      background={background}
-      backgroundImage={backgroundImage}
+      maxWidth="sm"
+      background="default"
     />
   );
 };

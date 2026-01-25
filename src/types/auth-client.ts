@@ -136,17 +136,32 @@ export interface LoginPageProps {
   className?: string;
 }
 
+/**
+ * RegisterPage props - consistent with LoginPage pattern
+ * Handles authentication internally, callbacks receive results
+ */
 export interface RegisterPageProps {
+  /** Page title (defaults to "Create Account") */
   title?: string;
+  /** Page subtitle */
   subtitle?: string;
+  /** Logo element or image URL */
   logo?: string | React.ReactNode;
+  /** Success callback - called after successful registration with user object */
   onSuccess?: (user: AuthUser) => void;
+  /** Error callback - called when registration fails */
   onError?: (error: AuthError) => void;
+  /** Show social login options */
   showSocialLogin?: boolean;
+  /** Require name field in registration form */
   requireName?: boolean;
+  /** Require terms acceptance checkbox */
   requireTerms?: boolean;
+  /** URL to terms of service document */
   termsUrl?: string;
+  /** Link to sign-in page (shown in footer) */
   signInUrl?: string;
+  /** Additional CSS class */
   className?: string;
 }
 

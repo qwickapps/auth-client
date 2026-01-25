@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-01-25
+
+### Changed
+- **RegisterPage**: Updated to use built-in authentication integration
+- **RegisterPage**: Simplified props interface to match LoginPage pattern
+- **RegisterPage**: Removed redundant props (header, background, maxWidth, etc.)
+- **Types**: Moved RegisterPageProps to shared types file for consistency
+
+### Fixed
+- Fixed FormField/FormSelect TypeScript errors
+- Improved error handling in registration flow
+
 ## [1.0.0] - 2026-01-09
 
 ### Added
@@ -25,5 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated license to PolyForm Shield License 1.0.0
 - Published to npm as public package
 
-[Unreleased]: https://github.com/qwickapps/auth-client/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/qwickapps/auth-client/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/qwickapps/auth-client/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/qwickapps/auth-client/releases/tag/v1.0.0

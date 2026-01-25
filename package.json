@@ -1,6 +1,6 @@
 {
   "name": "@qwickapps/auth-client",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React authentication components and provider logic for QwickApps - complete frontend auth solution",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -47,7 +47,7 @@
   "dependencies": {
     "@qwickapps/logging": "^1.0.2",
     "@qwickapps/auth": "^1.0.0",
-    "@qwickapps/react-framework": "^1.5.9",
+    "@qwickapps/react-framework": "^1.5.12",
     "@supabase/supabase-js": "^2.54.0",
     "supertokens-web-js": "^0.15.0"
   },

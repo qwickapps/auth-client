@@ -55,7 +55,7 @@ export type { AccessGuardProps, User, AccessDeniedAction } from './AccessGuard';
 export { LoginPage } from './LoginPage';
 
 export { RegisterPage } from './RegisterPage';
-export type { RegisterPageProps } from './RegisterPage';
+export type { RegisterPageProps } from '../../types/auth-client';
 
 export { PasswordResetPage } from './PasswordResetPage';
 export type { PasswordResetPageProps } from './PasswordResetPage';
