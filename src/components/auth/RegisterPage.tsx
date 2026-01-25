@@ -8,13 +8,42 @@
  * - Consistent footer with sign-in link
  * - Responsive design for all screen sizes
  *
+ * **IMPORTANT**: This component is framework-agnostic and does NOT handle routing internally.
+ * You MUST provide an onSuccess callback to handle navigation after successful registration.
+ *
+ * @example
+ * ```tsx
+ * // Next.js App Router
+ * import { useRouter } from 'next/navigation';
+ *
+ * function Page() {
+ *   const router = useRouter();
+ *   return (
+ *     <RegisterPage
+ *       onSuccess={() => router.push('/dashboard')}
+ *     />
+ *   );
+ * }
+ *
+ * // React Router
+ * import { useNavigate } from 'react-router-dom';
+ *
+ * function Page() {
+ *   const navigate = useNavigate();
+ *   return (
+ *     <RegisterPage
+ *       onSuccess={() => navigate('/dashboard')}
+ *     />
+ *   );
+ * }
+ * ```
+ *
  * Suggested route: /auth/register
  *
  * Copyright (c) 2025 QwickApps.com. All rights reserved.
  */
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from './RegisterForm';
 import { FormPage } from '@qwickapps/react-framework';
 import { SignInFooterLink } from './AuthFooterLinks';
@@ -34,7 +63,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
   signInUrl = "/auth/login",
   className,
 }) => {
-  const navigate = useNavigate();
   const { signUp, loading, error, clearError } = useAuth();
   const [localError, setLocalError] = useState<string | undefined>();
 
@@ -61,12 +89,11 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
           onError(result.error);
         }
       } else if (result.data) {
-        // Success - handle redirect
+        // Success - handle redirect via callback
         if (onSuccess) {
           onSuccess(result.data);
         } else {
-          // Default redirect to dashboard
-          navigate('/dashboard');
+          console.warn('RegisterPage: No onSuccess callback provided. Registration successful but cannot redirect. Please provide an onSuccess prop to handle navigation.');
         }
       }
     } catch (err) {

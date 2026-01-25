@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-01-25
+
+### Changed
+- **LoginPage**: Removed react-router-dom dependency for framework-agnostic navigation
+  - Now uses callback-based navigation via `onSuccess` prop instead of `useNavigate` hook
+  - Works in both React Router and Next.js applications
+- **RegisterPage**: Removed react-router-dom dependency for framework-agnostic navigation
+  - Now uses callback-based navigation via `onSuccess` prop instead of `useNavigate` hook
+  - Works in both React Router and Next.js applications
+
 ## [1.1.0] - 2026-01-25
 
 ### Changed
@@ -37,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated license to PolyForm Shield License 1.0.0
 - Published to npm as public package
 
-[Unreleased]: https://github.com/qwickapps/auth-client/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/qwickapps/auth-client/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/qwickapps/auth-client/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/qwickapps/auth-client/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/qwickapps/auth-client/releases/tag/v1.0.0

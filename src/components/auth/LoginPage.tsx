@@ -1,18 +1,47 @@
 /**
  * LoginPage - Complete login page with built-in authentication
- * 
+ *
  * Provides a full-page login experience with:
  * - Automatic Supabase authentication integration
  * - Centered, card-based layout using FormPage
  * - Status message handling
  * - Consistent footer with register link
  * - Responsive design for all screen sizes
- * 
+ *
+ * **IMPORTANT**: This component is framework-agnostic and does NOT handle routing internally.
+ * You MUST provide an onSuccess callback to handle navigation after successful login.
+ *
+ * @example
+ * ```tsx
+ * // Next.js App Router
+ * import { useRouter } from 'next/navigation';
+ *
+ * function Page() {
+ *   const router = useRouter();
+ *   return (
+ *     <LoginPage
+ *       onSuccess={() => router.push('/dashboard')}
+ *     />
+ *   );
+ * }
+ *
+ * // React Router
+ * import { useNavigate } from 'react-router-dom';
+ *
+ * function Page() {
+ *   const navigate = useNavigate();
+ *   return (
+ *     <LoginPage
+ *       onSuccess={() => navigate('/dashboard')}
+ *     />
+ *   );
+ * }
+ * ```
+ *
  * Copyright (c) 2025 QwickApps.com. All rights reserved.
  */
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LoginForm } from './LoginForm';
 import { FormPage } from '@qwickapps/react-framework';
 import { SignUpFooterLink } from './AuthFooterLinks';
@@ -29,7 +58,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   showForgotPassword = true,
   registerUrl = "/auth/register",
 }) => {
-  const navigate = useNavigate();
   const { signIn, loading, error, clearError } = useAuth();
   const [localError, setLocalError] = useState<string | undefined>();
 
@@ -47,12 +75,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           onError(result.error);
         }
       } else if (result.data) {
-        // Success - handle redirect
+        // Success - handle redirect via callback
         if (onSuccess) {
           onSuccess(result.data);
         } else {
-          // Default redirect to dashboard
-          navigate('/dashboard');
+          console.warn('LoginPage: No onSuccess callback provided. Login successful but cannot redirect. Please provide an onSuccess prop to handle navigation.');
         }
       }
     } catch (err) {
